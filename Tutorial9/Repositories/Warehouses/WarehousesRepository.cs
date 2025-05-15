@@ -31,4 +31,9 @@ public class WarehousesRepository : IWarehousesRepository
         }
     }
     
+    public string GetConnectionString()
+    {
+        return _connectionString;
+    }
+    
 }

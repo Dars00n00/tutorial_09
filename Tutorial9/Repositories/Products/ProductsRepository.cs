@@ -62,6 +62,31 @@ public class ProductsRepository : IProductsRepository
 
     public async Task<IEnumerable<ProductDTO>> GetProductsAsync()
     {
-        throw new NotImplementedException();
+        string command = @"SELECT * 
+                           FROM Product";
+        
+        var products = new List<ProductDTO>();
+        
+        await using (SqlConnection conn = new SqlConnection(_connectionString))
+        await using (SqlCommand cmd = new SqlCommand(command, conn))
+        {
+            await conn.OpenAsync();
+
+            await using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    products.Add(new ProductDTO
+                    {
+                        IdProduct = reader.GetInt32(reader.GetOrdinal("IdProduct")),
+                        Name = reader.GetString(reader.GetOrdinal("Name")),
+                        Description = reader.GetString(reader.GetOrdinal("Description")),
+                        Price = reader.GetDecimal(reader.GetOrdinal("Price"))
+                    });
+                }
+            }
+        }
+        return products;
     }
+    
 }

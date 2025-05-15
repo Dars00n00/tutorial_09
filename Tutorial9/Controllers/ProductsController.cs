@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using Tutorial9.Model;
 using Tutorial9.Services.Products;
 
 namespace Tutorial9.Controllers;
@@ -20,6 +22,17 @@ public class ProductsController : ControllerBase
     {
         var res = await _productsService.GetProductAsync(id);
         if (res == null)
+        {
+            return NotFound();
+        }
+        return Ok(res);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetProducts()
+    {
+        var res = await _productsService.GetProductsAsync();
+        if (res.IsNullOrEmpty())
         {
             return NotFound();
         }

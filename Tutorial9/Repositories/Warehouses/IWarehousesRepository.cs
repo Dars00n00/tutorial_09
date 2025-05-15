@@ -3,4 +3,6 @@
 public interface IWarehousesRepository
 {
     Task<bool> DoesWarehouseExistAsync(int idWarehouse);
+    string GetConnectionString();
+
 }

@@ -11,7 +11,12 @@ public class ProductsService : IProductsService
     {
         _productsRepository = productsRepository;
     }
-    
+
+    public async Task<bool> DoesProductExistAsync(int idProduct)
+    {
+        return await _productsRepository.DoesProductExistAsync(idProduct);
+    }
+
     public async Task<ProductDTO> GetProductAsync(int idProduct)
     {
         if (!await _productsRepository.DoesProductExistAsync(idProduct))
@@ -20,6 +25,11 @@ public class ProductsService : IProductsService
         }
         
         return await _productsRepository.GetProductAsync(idProduct);
+    }
+
+    public async Task<IEnumerable<ProductDTO>> GetProductsAsync()
+    {
+        return await _productsRepository.GetProductsAsync();
     }
     
 }
